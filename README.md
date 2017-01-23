@@ -1,4 +1,4 @@
-
+npm in 
 Your mission, should you choose to accept it, is to produce a React App with three primary components:
 
 1. A **List of events**. This component should initially render events that are retrieved from the [Eventable API](http://docs.eventable.apiary.io) using the provided credentials (in the email you received). It should also render events that are created and stored locally. The List should be sortable by title and start time.

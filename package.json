@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
+    "babel-register": "6.22.0",
+    "enzyme": "2.7.1",
+    "react-addons-test-utils": "15.4.2",
     "react-scripts": "0.7.0"
   },
   "dependencies": {
