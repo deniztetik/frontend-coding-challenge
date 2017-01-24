@@ -2,18 +2,36 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { EventList } from './EventList';
+import { SearchBar } from './Search/SearchBar';
+import { CreateEvent } from './CreateEvent';
 import 'whatwg-fetch';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      events: []
+      allEvents: [],
+      filteredEvents: [],
     };
+    this.updateSearchResults = this.updateSearchResults.bind(this);
+    this.addEvent = this.addEvent.bind(this);
   }
 
+  addEvent(event) {
+
+  }
+
+  updateSearchResults({target: {value}}) {
+    const allEvents = this.state.allEvents;
+    if (value === '') this.setState({filteredEvents: allEvents});
+    else {
+      this.setState({
+        filteredEvents: allEvents.filter(event => event.title.toLowerCase().includes(value.toLowerCase()))
+      });
+    }
+  };
+
   componentDidMount() {
-    const that = this;
     fetch('https://api.eventable.com/v1/events/', {
       headers: {
         'Content-Type': 'application/json',
@@ -22,7 +40,7 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(({results}) => results)
-      .then(events => that.setState({events,}));
+      .then(events => this.setState({allEvents: events, filteredEvents: events}));
   }
 
   render() {
@@ -32,7 +50,9 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <EventList events={this.state.events}/>
+        <SearchBar updateSearchResults={this.updateSearchResults}/>
+        <CreateEvent addEvent={this.addEvent}/>
+        <EventList events={this.state.filteredEvents}/>
       </div>
     );
   }

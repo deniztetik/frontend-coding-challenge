@@ -2,7 +2,6 @@ import React from 'react';
 import './Event.css';
 
 export const Event = ({ event }) => {
-  console.log("event", event);
   return (
     event ?
       <div>
