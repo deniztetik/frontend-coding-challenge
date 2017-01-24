@@ -1,7 +1,8 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
+import App from './App';
 import { EventList } from './EventList';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 
 const events = Array.from({length: 9}, (v, i) => {
   return {
@@ -43,6 +44,7 @@ const events = Array.from({length: 9}, (v, i) => {
 const props = {
   events
 };
+const app = mount(<App />);
 const wrapper = mount(<EventList {...props}/>);
 
 describe('Basic Rendering of List', () => {
@@ -61,5 +63,12 @@ describe('List Props', () => {
 describe('Rendering Events', () => {
   test('Should render the right amount of events', () => {
     expect(wrapper.find('.events').children().length).toBe(9);
+  });
+});
+
+describe('Rendering from Parent Component', () => {
+  test('Should render PROPerly', () => {
+    const eventList = app.find(EventList);
+    expect(Array.isArray(eventList.props().events)).toBe(true);
   });
 });
