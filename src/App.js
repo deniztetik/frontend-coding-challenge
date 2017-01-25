@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { EventList } from './EventList';
 import { SearchBar } from './Search/SearchBar';
 import { CreateEvent } from './CreateEvent';
+// import { SortForm } from './SortForm';
 import 'whatwg-fetch';
 
 class App extends Component {
@@ -12,21 +12,26 @@ class App extends Component {
     this.state = {
       allEvents: [],
       filteredEvents: [],
+      currentId: 1,
     };
     this.updateSearchResults = this.updateSearchResults.bind(this);
     this.addEvent = this.addEvent.bind(this);
   }
 
   addEvent(event) {
-
+    event.id = this.state.currentId;
+    const updatedEvents = [...this.state.allEvents, event];
+    this.setState({allEvents: updatedEvents, filteredEvents: updatedEvents, currentId: this.state.currentId + 1});
   }
 
-  updateSearchResults({target: {value}}) {
+  updateSearchResults(event) {
+    event.preventDefault();
     const allEvents = this.state.allEvents;
-    if (value === '') this.setState({filteredEvents: allEvents});
+    const text = event.target.value;
+    if (text === '') this.setState({filteredEvents: allEvents});
     else {
       this.setState({
-        filteredEvents: allEvents.filter(event => event.title.toLowerCase().includes(value.toLowerCase()))
+        filteredEvents: allEvents.filter(event => event.title.toLowerCase().includes(text.toLowerCase()))
       });
     }
   };
@@ -47,9 +52,9 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Eventable</h2>
         </div>
+        <SortForm/>
         <SearchBar updateSearchResults={this.updateSearchResults}/>
         <CreateEvent addEvent={this.addEvent}/>
         <EventList events={this.state.filteredEvents}/>
