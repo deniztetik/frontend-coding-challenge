@@ -7,7 +7,7 @@ export const EventList = ({ events = [] }) => {
     <div>
       <h2 className="eventListHeader">Events</h2>
       <ul className="events">
-        {events.map(event => <li key={event.id}><Event event={event}/></li>)}
+        {events.map(event => <li key={event.reactId}><Event event={event}/></li>)}
       </ul>
     </div>
   );

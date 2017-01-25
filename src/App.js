@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { EventList } from './EventList';
-import { SearchBar } from './Search/SearchBar';
+import { SearchBar } from './SearchBar';
 import { CreateEvent } from './CreateEvent';
 import { SortForm } from './SortForm';
 import moment from 'moment';
@@ -13,23 +13,21 @@ class App extends Component {
     this.state = {
       allEvents: [],
       filteredEvents: [],
-      currentId: 1,
+      currentId: 5,
     };
     this.updateSearchResults = this.updateSearchResults.bind(this);
     this.addEvent = this.addEvent.bind(this);
     this.sortEvents = this.sortEvents.bind(this);
   }
 
+  // Method called when new event is successfully submitted in <CreateEvent />
   addEvent(event) {
-    const start_time = moment(event.start_time, 'MM/DD/YY HH:mm').toISOString();
-    const end_time = moment(event.end_time, 'MM/DD/YY HH:mm').toISOString();
-    console.log(start_time);
-    console.log(end_time);
-    event.id = this.state.currentId;
+    event.reactId = this.state.currentId;
     const updatedEvents = [...this.state.allEvents, event];
     this.setState({allEvents: updatedEvents, filteredEvents: updatedEvents, currentId: this.state.currentId + 1});
   }
 
+  // Method called when one of the sort options is submitted from <SortForm />
   sortEvents(str) {
     const allEvents = this.state.allEvents;
     if (str === 'Name') {
@@ -47,6 +45,7 @@ class App extends Component {
     }
   }
 
+  // Method called interactively whenever input value changes in <SearchBar />
   updateSearchResults(event) {
     event.preventDefault();
     const allEvents = this.state.allEvents;
@@ -68,11 +67,12 @@ class App extends Component {
     })
       .then(response => response.json())
       .then(({results}) => results)
+      //Assign a specific "reactId" so that we can use the "keys" prop when rendering all events in <EventList />
+      .then(events => events.map((event, idx) => Object.assign({}, event, {reactId: idx + 1})))
       .then(events => this.setState({allEvents: events, filteredEvents: events}));
   }
 
   render() {
-    console.log(this.state.filteredEvents);
     return (
       <div className="App">
         <div className="App-header">

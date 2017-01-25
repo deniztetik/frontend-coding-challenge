@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {Form, FormGroup, FormControl, ControlLabel, Button} from 'react-bootstrap';
 
+import './CreateEvent.css';
+
 export class CreateEvent extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,6 @@ export class CreateEvent extends Component {
   }
 
   validateDate(date) {
-    console.log("date: ", date);
     return moment(date, 'YYYY-MM-DD HH:mm').isValid();
   }
 
@@ -40,7 +41,7 @@ export class CreateEvent extends Component {
   render() {
     return (
       <div>
-        <h1 style={{padding: "10px"}}>Create New Event</h1>
+        <h1>Create New Event</h1>
         <Form inline onSubmit={this.handleSubmit}>
           <FormGroup controlId="formInlineTitle">
             <ControlLabel>Title</ControlLabel>
