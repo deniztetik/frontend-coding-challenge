@@ -30,6 +30,7 @@ export class CreateEvent extends Component {
     event.preventDefault();
     if (this.validateDate(this.state.start_time)
       && this.validateDate(this.state.end_time)
+      && this.state.end_time > this.state.start_time
       && this.state.title) {
       this.props.addEvent(this.state);
       this.setState({showErrorMsg: false});
