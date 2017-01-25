@@ -1,11 +1,15 @@
 import React from 'react';
+import { Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
 export const SearchBar = ({updateSearchResults}) => (
-  <form onSubmit={updateSearchResults}>
-    <label>
-      Search
-      <input type="text" onChange={updateSearchResults} />
-    </label>
-    <input type="submit" value="Submit" />
-  </form>
+  <Form inline onSubmit={updateSearchResults}>
+    <FormGroup controlId="formInlineTitle">
+      <ControlLabel>Search</ControlLabel>
+      {' '}
+      <FormControl type="text" onChange={updateSearchResults}/>
+    </FormGroup>
+    <Button type="submit">
+      Submit
+    </Button>
+  </Form>
 );

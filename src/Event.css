@@ -1,3 +1,4 @@
-ul {
-  list-style: none;
+.event {
+  display: block;
+  margin: 0 auto;
 }

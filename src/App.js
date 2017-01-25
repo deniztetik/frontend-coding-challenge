@@ -3,7 +3,8 @@ import './App.css';
 import { EventList } from './EventList';
 import { SearchBar } from './Search/SearchBar';
 import { CreateEvent } from './CreateEvent';
-// import { SortForm } from './SortForm';
+import { SortForm } from './SortForm';
+import moment from 'moment';
 import 'whatwg-fetch';
 
 class App extends Component {
@@ -16,12 +17,34 @@ class App extends Component {
     };
     this.updateSearchResults = this.updateSearchResults.bind(this);
     this.addEvent = this.addEvent.bind(this);
+    this.sortEvents = this.sortEvents.bind(this);
   }
 
   addEvent(event) {
+    const start_time = moment(event.start_time, 'MM/DD/YY HH:mm').toISOString();
+    const end_time = moment(event.end_time, 'MM/DD/YY HH:mm').toISOString();
+    console.log(start_time);
+    console.log(end_time);
     event.id = this.state.currentId;
     const updatedEvents = [...this.state.allEvents, event];
     this.setState({allEvents: updatedEvents, filteredEvents: updatedEvents, currentId: this.state.currentId + 1});
+  }
+
+  sortEvents(str) {
+    const allEvents = this.state.allEvents;
+    if (str === 'Name') {
+      const sortedEvents = [...this.state.filteredEvents].sort((a, b) => {
+        return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+      });
+      this.setState({filteredEvents: sortedEvents});
+    } else if (str === 'Date') {
+      const sortedEvents = [...this.state.filteredEvents].sort((a, b) => {
+        return moment(a.start_time) > moment(b.start_time) ? 1 : -1;
+      });
+      this.setState({filteredEvents: sortedEvents});
+    } else {
+      this.setState({filteredEvents: allEvents});
+    }
   }
 
   updateSearchResults(event) {
@@ -49,13 +72,16 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.filteredEvents);
     return (
       <div className="App">
         <div className="App-header">
           <h2>Eventable</h2>
         </div>
-        <SortForm/>
-        <SearchBar updateSearchResults={this.updateSearchResults}/>
+        <span>
+          <SearchBar updateSearchResults={this.updateSearchResults}/>
+          <SortForm sortEvents={this.sortEvents}/>
+        </span>
         <CreateEvent addEvent={this.addEvent}/>
         <EventList events={this.state.filteredEvents}/>
       </div>

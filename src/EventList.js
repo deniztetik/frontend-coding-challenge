@@ -1,5 +1,6 @@
 import React from 'react';
 import { Event } from './Event';
+import './EventList.css';
 
 export const EventList = ({ events = [] }) => {
   return(
